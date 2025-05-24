@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <title>Bourne Series</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
   <style>
     :root {
       --primary: #ffcc00;
@@ -23,46 +25,55 @@
       min-height: 100vh;
       overflow-x: hidden;
       scroll-behavior: smooth;
+      -webkit-tap-highlight-color: transparent;
     }
     
     .container {
+      width: 100%;
       max-width: 1200px;
       margin: 0 auto;
-      padding: 20px;
+      padding: 15px;
+      box-sizing: border-box;
     }
     
     h1 {
-      margin: 20px 0 30px;
-      font-size: 2.5rem;
+      margin: 10px 0 20px;
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       background: linear-gradient(90deg, var(--primary), var(--accent));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
       text-shadow: 0 0 10px rgba(255, 204, 0, 0.3);
+      text-align: center;
+      padding: 0 10px;
     }
     
     .movies {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 25px;
-      padding: 20px 0;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 15px;
+      padding: 10px 0;
+      width: 100%;
     }
     
     .movie {
       background: var(--card-bg);
       border: 1px solid rgba(255, 204, 0, 0.2);
-      border-radius: 16px;
-      padding: 15px;
+      border-radius: 12px;
+      padding: 12px;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
       position: relative;
       overflow: hidden;
+      aspect-ratio: 2/3;
+      display: flex;
+      flex-direction: column;
     }
     
     .movie:hover {
       transform: translateY(-5px);
-      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
       border-color: var(--primary);
     }
     
@@ -85,9 +96,10 @@
     
     .movie img {
       width: 100%;
-      height: 300px;
+      height: auto;
+      flex-grow: 1;
       object-fit: cover;
-      border-radius: 10px;
+      border-radius: 8px;
       transition: transform 0.3s ease;
     }
     
@@ -96,11 +108,17 @@
     }
     
     .movie-title {
-      margin-top: 15px;
-      font-size: 1.1rem;
+      margin-top: 10px;
+      font-size: clamp(0.9rem, 3vw, 1.1rem);
       font-weight: 600;
       color: var(--primary);
       transition: color 0.3s ease;
+      text-align: center;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
     }
     
     .movie:hover .movie-title {
@@ -109,7 +127,7 @@
     
     /* Custom scrollbar */
     ::-webkit-scrollbar {
-      width: 10px;
+      width: 6px;
     }
     
     ::-webkit-scrollbar-track {
@@ -118,22 +136,26 @@
     
     ::-webkit-scrollbar-thumb {
       background: var(--primary);
-      border-radius: 5px;
+      border-radius: 3px;
     }
     
     /* Search and filter controls */
     .controls {
       display: flex;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 10px;
       justify-content: center;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
+      width: 100%;
+      padding: 0 10px;
+      box-sizing: border-box;
     }
     
     .search-container {
       position: relative;
       flex-grow: 1;
       max-width: 500px;
+      width: 100%;
     }
     
     .search-container i {
@@ -142,47 +164,86 @@
       top: 50%;
       transform: translateY(-50%);
       color: var(--primary);
+      font-size: 16px;
     }
     
     #searchBar {
       width: 100%;
-      padding: 12px 20px 12px 45px;
+      padding: 10px 15px 10px 40px;
       font-size: 1rem;
-      border-radius: 30px;
-      border: 2px solid rgba(255, 204, 0, 0.3);
+      border-radius: 25px;
+      border: 1px solid rgba(255, 204, 0, 0.3);
       background: rgba(26, 26, 26, 0.8);
       color: var(--text);
       transition: all 0.3s ease;
+      box-sizing: border-box;
+      -webkit-appearance: none;
     }
     
     #searchBar:focus {
       outline: none;
       border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(255, 204, 0, 0.2);
+      box-shadow: 0 0 0 2px rgba(255, 204, 0, 0.2);
     }
     
-    /* Responsive design */
-    @media (max-width: 768px) {
+    /* Mobile specific optimizations */
+    @media (max-width: 640px) {
       .movies {
-        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-        gap: 15px;
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 10px;
       }
       
-      h1 {
-        font-size: 2rem;
+      .movie {
+        padding: 8px;
+        border-radius: 10px;
+      }
+      
+      .movie-title {
+        font-size: 0.85rem;
+        margin-top: 8px;
+      }
+      
+      #searchBar {
+        padding: 8px 15px 8px 35px;
+        font-size: 0.95rem;
+      }
+      
+      .search-container i {
+        font-size: 14px;
+        left: 12px;
       }
     }
     
-    @media (max-width: 480px) {
+    @media (max-width: 400px) {
       .movies {
         grid-template-columns: repeat(2, 1fr);
       }
       
-      .movie img {
-        height: 220px;
+      .container {
+        padding: 10px;
       }
     }
-
+    
+    /* Animation styles */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(10px); }
+    }
+    
+    /* Prevent zoom on mobile */
+    input[type="text"] {
+      font-size: 16px !important;
+    }
+    
+    /* Touch feedback */
+    .movie:active {
+      transform: scale(0.98);
+    }
   </style>
 </head>
 <body>
@@ -193,15 +254,13 @@
   <div class="controls">
     <div class="search-container">
       <i class="fas fa-search"></i>
-      <input id="searchBar" placeholder="Search Bourne movies..." type="text"/>
+      <input id="searchBar" placeholder="Search Bourne movies..." type="text" autocapitalize="off" autocomplete="off"/>
     </div>
   </div>
   
   <div class="movies" id="movies"></div>
 </div>
 
-<!-- Font Awesome for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <script>
 const movies = [
   { title: "The Bourne Identity", video: "https://sxic.killionorellanacoelho.sbs/v4/ho/6uabl/index-f2-v1-a1.txt", image: "https://image.tmdb.org/t/p/original/vN6jGCuzefysLVFrzK3Vs6xAdu1.jpg" },
@@ -209,7 +268,7 @@ const movies = [
   { title: "The Bourne Ultimatum", video: "https://s3ae.amberwels.sbs:443/v4/ox/ufk8y/index-f2-v1-a1.txt", image: "https://image.tmdb.org/t/p/original/d4DuphCHCjVUyffExnK5nLbn39K.jpg" },
   { title: "The Bourne Legacy", video: "https://sskt.sralphqesrob.sbs/v4/ox/xd68w/index-f1-v1-a1.txt", image: "https://image.tmdb.org/t/p/original/xNJX6LYss75F4zlyBZ0jwLVgZlG.jpg" },
   { title: "Jason Bourne", video: "https://slob.sperlinglayma.sbs/v4/ic/rmolh/cf-master.txt?v=1735725966", image: "https://play-lh.googleusercontent.com/a9rdmI0gkh7xtmSChWvUe1amHSTa9S_B4dhmD2GSota9EeDqoRDVEWaKcsXEYUUG042GPQ" },
-  ];
+];
 
 // Enhanced movie loading with animations
 const container = document.getElementById('movies');
@@ -226,13 +285,13 @@ movies.forEach((movie, index) => {
     <div class="movie-title">${movie.title}</div>
   `;
   
-  div.onclick = () => {
+  div.addEventListener('click', () => {
     div.style.transform = 'scale(0.95)';
     setTimeout(() => {
       const url = `player.html?title=${encodeURIComponent(movie.title)}&video=${encodeURIComponent(movie.video)}&index=${index}`;
       window.location.href = url;
     }, 200);
-  };
+  });
   
   container.appendChild(div);
   
@@ -248,7 +307,9 @@ movies.forEach((movie, index) => {
 
 // Enhanced search with debounce
 let searchTimeout;
-document.getElementById('searchBar').addEventListener('input', function() {
+const searchBar = document.getElementById('searchBar');
+
+searchBar.addEventListener('input', function() {
   clearTimeout(searchTimeout);
   searchTimeout = setTimeout(() => {
     const searchTerm = this.value.toLowerCase().trim();
@@ -259,8 +320,8 @@ document.getElementById('searchBar').addEventListener('input', function() {
       const shouldShow = title.includes(searchTerm);
       
       if (shouldShow) {
-        div.style.display = 'block';
-        div.style.animation = 'fadeIn 0.5s ease forwards';
+        div.style.display = 'flex';
+        div.style.animation = 'fadeIn 0.3s ease forwards';
       } else {
         div.style.animation = 'fadeOut 0.3s ease forwards';
         setTimeout(() => {
@@ -273,19 +334,25 @@ document.getElementById('searchBar').addEventListener('input', function() {
   }, 300);
 });
 
-// Add CSS animations
-const style = document.createElement('style');
-style.textContent = `
-  @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+// Prevent form submission on enter
+searchBar.addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') {
+    e.preventDefault();
   }
-  @keyframes fadeOut {
-    from { opacity: 1; transform: translateY(0); }
-    to { opacity: 0; transform: translateY(10px); }
+});
+
+// Handle mobile viewport better
+function handleViewport() {
+  let viewport = document.querySelector('meta[name="viewport"]');
+  if (window.innerWidth <= 640) {
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no');
+  } else {
+    viewport.setAttribute('content', 'width=device-width, initial-scale=1.0');
   }
-`;
-document.head.appendChild(style);
+}
+
+window.addEventListener('resize', handleViewport);
+handleViewport();
 </script>
 
 </body>
